@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="getAccounts" doc:id="be3714d2-00dd-42ff-b5ca-14cca4bfe6b9" >
+		<http:listener doc:name="Listener" doc:id="74d2a3d4-2866-42c6-8797-f812b6a9c416" config-ref="HTTP_Listener_config" path="/system/accounts"/>
+		<salesforce:query doc:name="SELECT Accounts" doc:id="418d987a-a966-4580-8164-e6b1a4d73430" config-ref="Salesforce_Config" >
+			<salesforce:salesforce-query ><![CDATA[SELECT Id, Name, AccountNumber, Industry, Description, BillingStreet	
+FROM Account
+]]></salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="Transform Message" doc:id="88a4c0e0-c3bf-4958-a350-3ab2756ce264" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="getContacts" doc:id="c5a93282-6a18-43d4-a866-6ed037b843b9" >
+		<http:listener doc:name="Listener" doc:id="c2b41c45-1ed8-44af-9a80-afcfc0b80570" config-ref="HTTP_Listener_config" path="/system/contacts" />
+		<salesforce:query doc:name="SELECT Contacts" doc:id="ceac7c55-6ed1-4985-b535-f27fa65088c0" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[SELECT  Id, AccountId, LastName, FirstName, Salutation, Name, MailingStreet
+FROM Contact]]></salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="Transform Message" doc:id="7aebbee0-1f70-48bd-91cd-253407e5ca70" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

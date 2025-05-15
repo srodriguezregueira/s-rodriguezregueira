@@ -1,0 +1,11 @@
+http:
+  port: "8081"
+
+system:
+  client_id:"b933d1fa12c64c3b87d4c33aa805d005"
+
+salesforce:
+  username: "mulesofttest@deloitte.es"
+  password: "testmulesoft0"
+  securityToken: "031LwD9PtteJB7MmoNQjFN9yD"
+  authURL: "https://login.salesforce.com/services/Soap/u/56.0"
